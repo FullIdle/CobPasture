@@ -21,7 +21,7 @@ allprojects {
 
         maven {
             allowInsecureProtocol = true
-            url "http://qiyuan.figsq.top:31647/snapshots"
+            url "http://server.pokemtd.top:31647/snapshots"
         }
 
         maven {
