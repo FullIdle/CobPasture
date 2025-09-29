@@ -18,6 +18,8 @@ offline-support: true
 destinyknot-consume: true
 #不变之石是否消耗
 everstone-consume: true
+#狗圈的消耗
+power-held-consume: true
 #双百变繁殖
 double-ditto-breed:
   #是否可以双百变怪进行繁殖(产出随机物种幼年时期(包括神兽!))

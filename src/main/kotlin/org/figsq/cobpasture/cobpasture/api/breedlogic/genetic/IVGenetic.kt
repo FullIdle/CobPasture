@@ -1,6 +1,7 @@
 package org.figsq.cobpasture.cobpasture.api.breedlogic.genetic
 
 import com.cobblemon.mod.common.CobblemonItems
+import com.cobblemon.mod.common.api.pokemon.labels.CobblemonPokemonLabels
 import com.cobblemon.mod.common.api.pokemon.stats.Stat
 import com.cobblemon.mod.common.api.pokemon.stats.Stats
 import com.cobblemon.mod.common.pokemon.Pokemon
@@ -42,12 +43,20 @@ object IVGenetic : IGeneticHandler {
 
             oneStat?.let { it ->
                 //有一个狗圈参与
+                tryConsumePowerHeld(it.second)
                 egg.setIV(it.first, it.second.ivs[it.first]!!)
                 geneticIV(parent1,parent2, egg, notGenetic, it.first)
             } ?:
             //正常只有红线的遗传
             geneticIV(parent1, parent2, egg, notGenetic)
         }
+    }
+
+    fun tryConsumePowerHeld(pokemon: Pokemon) {
+        if (!powerHeldConsume || getPowerHeldStat(pokemon) == null) return
+        val copy = pokemon.heldItem().copy()
+        copy.count--
+        pokemon.swapHeldItem(copy, false)
     }
 
     fun tryConsumeKnot(pokemon: Pokemon) {
@@ -91,8 +100,10 @@ object IVGenetic : IGeneticHandler {
         return "destinyknot" == CobblemonHeldItemManager.showdownId(pokemon.heldItem())
     }
 
-    //默认消耗
+    //红线消耗
     var destinyknotConsume: Boolean = true
+    //狗圈消耗
+    var powerHeldConsume: Boolean = true
     val powerHeldItemMap = mutableMapOf<String, Stat>(
         CobblemonHeldItemManager.showdownIdOf(CobblemonItems.POWER_WEIGHT)!! to Stats.HP,
         CobblemonHeldItemManager.showdownIdOf(CobblemonItems.POWER_BRACER)!! to Stats.ATTACK,
@@ -105,6 +116,8 @@ object IVGenetic : IGeneticHandler {
 
     //加载配置所需项
     fun load() {
-        destinyknotConsume = CobPasture.INSTANCE.config.getBoolean("destinyknot-consume")
+        val config = CobPasture.INSTANCE.config
+        destinyknotConsume = config.getBoolean("destinyknot-consume")
+        powerHeldConsume = config.getBoolean("power-held-consume")
     }
 }
