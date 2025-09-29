@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'org.figsq.cobpasture.cobpasture.CobPasture'
-version = '1.2.5-STABLE'
+version = '1.2.6-BETA'
 
 allprojects {
     apply plugin: 'org.jetbrains.kotlin.jvm'
